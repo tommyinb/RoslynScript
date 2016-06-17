@@ -1,0 +1,7 @@
+/packages
+/.svn
+/.vs
+/RoslynScript/obj
+/RoslynScript/bin/Debug
+/RoslynScript/bin/Release
+/RoslynScript/RoslynScript.csproj.user
