@@ -56,7 +56,7 @@ namespace RoslynScript
                 if (header.HideConsole == false)
                 {
                     attachConsole = new AttachConsole();
-                    Console.Title = fullPath;
+                    Console.Title = "Roslyn Script - " + Path.GetFileName(fullPath);
                 }
 
                 var runAsync = Script.RunAsync(fullPath, parameters);
