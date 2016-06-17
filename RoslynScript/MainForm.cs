@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -54,29 +55,44 @@ namespace RoslynScript
             XmlUtil.WriteFile(configure, configurePath);
         }
 
-        private const string commandExtension = ".cs";
         private const string commandName = "Roslyn Script";
         private void LoadExplorerCommand()
         {
             var programAssembly = Assembly.GetExecutingAssembly();
-            var expectedValue = @"""" + programAssembly.Location + @""" ""%1"" %*";
+            var commandValue = @"""" + programAssembly.Location + @""" ""%1"" %*";
 
-            var explorerValue = FileCommand.Get(commandExtension, commandName);
-            var commandMatched = string.Equals(expectedValue, explorerValue, StringComparison.OrdinalIgnoreCase);
+            var fileCommand = FileCommand.Get(commandName);
+            var commandMatched = string.Equals(commandValue, fileCommand.Command, StringComparison.OrdinalIgnoreCase);
 
             addExplorerCommandCheckBox.Checked = commandMatched;
         }
-        private void SaveExplorerCommand()
+        private bool SaveExplorerCommand()
         {
-            if (addExplorerCommandCheckBox.Checked)
+            try
             {
-                var programAssembly = Assembly.GetExecutingAssembly();
-                var commandValue = @"""" + programAssembly.Location + @""" ""%1"" %*";
-                FileCommand.Set(commandExtension, commandName, commandValue);
+                if (addExplorerCommandCheckBox.Checked)
+                {
+                    var programAssembly = Assembly.GetExecutingAssembly();
+                    var commandValue = @"""" + programAssembly.Location + @""" ""%1"" %*";
+
+                    var fileCommand = new FileCommand
+                    {
+                        Name = commandName,
+                        Command = commandValue,
+                        Extension = ".cs"
+                    };
+                    fileCommand.Save();
+                }
+                else
+                {
+                    FileCommand.Remove(commandName);
+                }
+                return true;
             }
-            else
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is SecurityException)
             {
-                FileCommand.Remove(commandExtension, commandName);
+                MessageBox.Show("Cannot access explorer without administrator right.", Text);
+                return false;
             }
         }
 
@@ -149,7 +165,9 @@ namespace RoslynScript
         private void saveConfigureButton_Click(object sender, EventArgs e)
         {
             SaveConfigure();
-            SaveExplorerCommand();
+
+            if (SaveExplorerCommand() == false) return;
+
             SaveShellCommand();
 
             saveConfigureButton.Enabled = false;

@@ -7,56 +7,44 @@ using System.Threading.Tasks;
 
 namespace RoslynScript.Utility
 {
-    public static class FileCommand
+    public class FileCommand
     {
-        public static string Get(string extension, string name)
+        public string Name { get; set; }
+
+        public string Command { get; set; }
+
+        public string Extension { get; set; }
+
+        public static FileCommand Get(string name)
         {
-            var key = GetKey(extension, name);
-            var value = Registry.GetValue(key, string.Empty, null);
-            return value as string;
+            var key = @"HKEY_CLASSES_ROOT\*\shell\" + name;
+
+            return new FileCommand
+            {
+                Name = name,
+                Command = Registry.GetValue(key + @"\command", string.Empty, null) as string,
+                Extension = Registry.GetValue(key, "AppliesTo", null) as string
+            };
         }
 
-        public static void Set(string extension, string name, string value)
+        public void Save()
         {
-            var key = GetKey(extension, name);
-            Registry.SetValue(key, string.Empty, value);
-        }
+            if (Name == null) throw new InvalidOperationException();
+            if (Command == null) throw new InvalidOperationException();
 
-        private static string GetKey(string extension, string name)
-        {
-            var extensionName = Registry.GetValue(@"HKEY_CLASSES_ROOT\" + extension, string.Empty, null);
-            if (extensionName != null)
+            var key = @"HKEY_CLASSES_ROOT\*\shell\" + Name;
+            Registry.SetValue(key + @"\command", string.Empty, Command);
+
+            if (Extension != null)
             {
-                return @"HKEY_CLASSES_ROOT\" + extensionName + @"\Shell\" + name + @"\command";
-            }
-            else
-            {
-                return @"HKEY_CLASSES_ROOT\" + extension + @"\Shell\" + name + @"\command";
+                Registry.SetValue(key, "AppliesTo", Extension);
             }
         }
 
-        public static void Remove(string extension, string name)
+        public static void Remove(string name)
         {
-            var extensionKey = Registry.ClassesRoot.OpenSubKey(extension);
-            if (extensionKey == null) return;
-
-            var extensionName = extensionKey.GetValue(string.Empty) as string;
-            var hasExtensionName = string.IsNullOrEmpty(extensionName) == false;
-            if (hasExtensionName)
-            {
-                var extensionNameKey = Registry.ClassesRoot.OpenSubKey(extensionName);
-                var shellKey = extensionNameKey.OpenSubKey("Shell", writable: true);
-                if (shellKey == null) return;
-
-                shellKey.DeleteSubKeyTree(name, throwOnMissingSubKey: false);
-            }
-            else
-            {
-                var shellKey = extensionKey.OpenSubKey("Shell", writable: true);
-                if (shellKey == null) return;
-
-                shellKey.DeleteSubKeyTree(name, throwOnMissingSubKey: false);
-            }
+            var key = Registry.ClassesRoot.OpenSubKey(@"*\shell\", writable: true);
+            key.DeleteSubKeyTree(name, throwOnMissingSubKey: false);
         }
     }
 }
