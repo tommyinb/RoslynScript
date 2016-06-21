@@ -7,7 +7,6 @@
 ##Edit and Run
 1. Right click your C# file
 2. Click "Roslyn Script"
-3. Watch it runs!
 
 ![preview](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/preview1.png)
 
@@ -18,10 +17,10 @@ Double click "RoslynScript.exe". A clean UI is provided.
 
 ![preview](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/preview2.png)
 
-1. Set the Windows integration you like. We suggest you select both!
-2. Add default namespaces and DLL dependencies
-3. Save configuration
-4. Run scripts!
+* Set the Windows integration you like. We suggest you select both!
+* Add default namespaces and DLL dependencies
+* Save configuration
+* Run scripts!
 
 ##Microsoft .NET Compiler Platform
 The compiler is just so powerful. C# 6.0? Just run it!
