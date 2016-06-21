@@ -10,14 +10,14 @@
 
 ![preview](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/preview1.png)
 
-Forget the days that you repeatly press the recompile button.
+Forget the days that you repeatly pressed the recompile button.
 
 ##Windows Integration
 Double click "RoslynScript.exe". A clean UI is provided.
 
 ![preview](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/preview2.png)
 
-* Set the Windows integration you like. We suggest you select both!
+* Set the Windows integrations you like. We suggest you select both!
 * Add default namespaces and DLL dependencies
 * Save configuration
 * Run scripts!
