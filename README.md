@@ -4,7 +4,7 @@
 * Size: 2.4 MB
 * Framework: .NET 4.6
 
-##Edit and Run
+## Edit and Run
 1. Right click your C# file
 2. Click "Roslyn Script"
 
@@ -12,7 +12,7 @@
 
 Forget the days that you repeatly pressed the recompile button.
 
-##Windows Integration
+## Windows Integration
 Double click "RoslynScript.exe". A clean UI is provided.
 
 ![preview](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/preview2.png)
@@ -22,14 +22,14 @@ Double click "RoslynScript.exe". A clean UI is provided.
 * Save configuration
 * Run scripts!
 
-##Microsoft .NET Compiler Platform
+## Microsoft .NET Compiler Platform
 The compiler is just so powerful. C# 6.0? Just run it!
 
 https://github.com/dotnet/roslyn
 
 With it, you can easily build flexible tools with high speed.
 
-##Download
+## Download
 * Portable Application: [RoslynScript.7z](https://raw.githubusercontent.com/tommyinb/RoslynScript/master/RoslynScript/bin/RoslynScript.7z)
 * Size: 12.1 MB
 * Framework: .NET 4.6
